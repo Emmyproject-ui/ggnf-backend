@@ -1,0 +1,25 @@
+--- Customer API Verification Script ---
+
+1. Creating/Resetting Test Customer...
+Customer created: customer@test.com
+
+2. Testing Donation Submission...
+SUCCESS: Donation created.
+ - Amount: 5,000.00
+ - Cause: Education Fund
+ - Payment Ref: REF-1771431039
+
+3. Testing Volunteer Signup...
+SUCCESS: Volunteer signup created.
+ - Skills: Teaching, Coding
+
+4. Verifying Activity Logs...
+SUCCESS: Found 2 activity logs for customer.
+ - [donation] Donation of ???5,000.00 received
+ - [volunteer] New volunteer signup
+
+5. Middleware Logic Check (CustomerMiddleware)...
+CHECK: Admin was BLOCKED (403) from customer route. (This matches current strict implementation)
+SUCCESS: Customer was ALLOWED access.
+
+--- Verification Complete ---
