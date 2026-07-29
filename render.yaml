@@ -1,0 +1,61 @@
+services:
+  # ── Laravel API backend ─────────────────────────────────────
+  - type: web
+    name: ggnf-backend
+    runtime: docker
+    # Render auto-detects Dockerfile in repo root
+    dockerfilePath: ./Dockerfile
+    # Render injects PORT automatically — no need to set it here
+    healthCheckPath: /up
+    autoDeploy: true
+    envVars:
+      - key: APP_NAME
+        value: "GGNF Backend"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      # ⚠ Set APP_URL to your Render URL in the Render dashboard
+      - key: APP_URL
+        value: https://ggnf-backend.onrender.com
+      # ── Generate with: php artisan key:generate --show ───────
+      - key: APP_KEY
+        sync: false   # set this as a secret in Render dashboard
+      # ── Database (Aiven) ─────────────────────────────────────
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: mysql-2fd82d31-emmanuelnwigwe87-d318.l.aivencloud.com
+      - key: DB_PORT
+        value: "16755"
+      - key: DB_DATABASE
+        value: defaultdb
+      - key: DB_USERNAME
+        value: avnadmin
+      - key: DB_PASSWORD
+        sync: false   # set this as a secret in Render dashboard
+      - key: MYSQL_ATTR_SSL_CA
+        value: "true"
+      # ── Cache / Session ───────────────────────────────────────
+      - key: CACHE_STORE
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      # ── CORS / Sanctum ───────────────────────────────────────
+      # ⚠ Replace with your actual Vercel URL
+      - key: FRONTEND_URL
+        value: https://ggnfngo.vercel.app
+      - key: SANCTUM_STATEFUL_DOMAINS
+        value: ggnfngo.vercel.app
+      - key: SANCTUM_TOKEN_EXPIRATION
+        value: "1440"
+      # ── Paystack ─────────────────────────────────────────────
+      - key: PAYSTACK_SECRET_KEY
+        sync: false   # set this as a secret in Render dashboard
+      # ── Log ──────────────────────────────────────────────────
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: error

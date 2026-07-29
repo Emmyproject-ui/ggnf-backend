@@ -1,0 +1,50 @@
+# ── Dependency caches ──────────────────────────────────────
+vendor/
+node_modules/
+
+# ── Git ────────────────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes
+
+# ── Environment files (NEVER in image) ─────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Dev / test files ───────────────────────────────────────
+.editorconfig
+.phpunit.result.cache
+phpunit.xml
+tests/
+*.test.php
+test_*.php
+check_db.php
+db_health.php
+
+# ── IDE / OS ───────────────────────────────────────────────
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.suo
+*.swp
+
+# ── Logs & temp ────────────────────────────────────────────
+storage/logs/*.log
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+
+# ── Docker meta (not needed inside image) ──────────────────
+docker-compose*.yml
+# render.yaml IS needed (kept in repo, not image)
+
+# ── Docs ───────────────────────────────────────────────────
+README.md
+*.md
+!render.yaml
+
+# ── Build artefacts ────────────────────────────────────────
+public/hot
+public/storage

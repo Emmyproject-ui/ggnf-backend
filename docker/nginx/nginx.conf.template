@@ -1,0 +1,61 @@
+server {
+    listen ${PORT};
+    server_name _;
+
+    root /var/www/html/public;
+    index index.php index.html;
+
+    # ── Security headers ────────────────────────────────────
+    add_header X-Frame-Options           "SAMEORIGIN"  always;
+    add_header X-Content-Type-Options    "nosniff"     always;
+    add_header X-XSS-Protection          "1; mode=block" always;
+    add_header Referrer-Policy           "strict-origin-when-cross-origin" always;
+
+    # ── Gzip ────────────────────────────────────────────────
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml;
+    gzip_min_length 1024;
+
+    # ── Max upload ──────────────────────────────────────────
+    client_max_body_size 64M;
+
+    # ── Laravel front-controller ────────────────────────────
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # ── PHP-FPM — same container via localhost ───────────────
+    location ~ \.php$ {
+        fastcgi_pass            127.0.0.1:9000;
+        fastcgi_index           index.php;
+        fastcgi_buffers         16 16k;
+        fastcgi_buffer_size     32k;
+        include                 fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT   $realpath_root;
+        fastcgi_param SERVER_NAME     $host;
+        # Pass real IP from Render's proxy
+        fastcgi_param REMOTE_ADDR     $http_x_forwarded_for;
+    }
+
+    # ── Cache static assets ─────────────────────────────────
+    location ~* \.(jpg|jpeg|gif|png|ico|css|js|woff2?|ttf|svg|webp)$ {
+        expires 1y;
+        access_log off;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # ── Block dot-files ─────────────────────────────────────
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+
+    # ── Render health-check / Laravel up endpoint ────────────
+    location = /up {
+        access_log off;
+        try_files $uri /index.php?$query_string;
+    }
+
+    error_log  /dev/stderr warn;
+    access_log /dev/stdout;
+}
