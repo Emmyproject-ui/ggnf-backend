@@ -13,6 +13,14 @@ echo "🌐 Will listen on port ${PORT}"
 echo "⚙️  Configuring Nginx (port=${PORT})..."
 envsubst '${PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/http.d/default.conf
 
+# ── Ensure storage structures exist at runtime ───────────────
+echo "⚙️  Ensuring runtime storage directories..."
+mkdir -p storage/framework/{sessions,views,cache}
+mkdir -p storage/logs
+chown -R nobody:nobody storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
+
+
 # ── Wait for Aiven MySQL ─────────────────────────────────────
 DB_HOST="${DB_HOST:-mysql-2fd82d31-emmanuelnwigwe87-d318.l.aivencloud.com}"
 DB_PORT="${DB_PORT:-16755}"
