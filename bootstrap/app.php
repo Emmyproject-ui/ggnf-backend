@@ -29,7 +29,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Force HTTPS in production
         if (env('APP_ENV') === 'production') {
             $middleware->trustProxies(at: '*');
-            URL::forceScheme('https');
         }
     })
     ->withExceptions(function (Exceptions $exceptions): void {

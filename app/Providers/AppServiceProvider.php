@@ -43,5 +43,10 @@ class AppServiceProvider extends ServiceProvider
                     ], 429);
                 });
         });
+
+        // Force HTTPS scheme in production
+        if (config('app.env') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }
