@@ -74,13 +74,14 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
 
-        // Catch-all for unhandled exceptions in production
+        // Catch-all — always return JSON so errors are visible in browser for diagnosis
         $exceptions->render(function (\Throwable $e, $request) {
-            if (($request->is('api/*') || $request->expectsJson()) && !config('app.debug')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'An unexpected error occurred.',
-                ], 500);
-            }
+            return response()->json([
+                'success'   => false,
+                'error'     => get_class($e),
+                'message'   => $e->getMessage(),
+                'file'      => $e->getFile(),
+                'line'      => $e->getLine(),
+            ], 500);
         });
     })->create();
