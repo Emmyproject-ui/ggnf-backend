@@ -15,12 +15,16 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', '_ignition/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', '_ignition/*', 'health', 'up'],
 
     'allowed_methods' => ['*'],
 
     'allowed_origins' => array_filter([
+        // ── Production ───────────────────────────────────────────
+        'https://ggnfngo.vercel.app',
         env('FRONTEND_URL'),
+
+        // ── Local development ────────────────────────────────────
         'http://localhost:3000',
         'http://127.0.0.1:3000',
         'http://localhost:3001',
@@ -44,6 +48,8 @@ return [
 
     'max_age' => 86400,
 
-    'supports_credentials' => true,
+    // Pure stateless Bearer token auth — no cookies needed.
+    // Setting true here can block cross-origin requests that don't send credentials.
+    'supports_credentials' => false,
 
 ];
