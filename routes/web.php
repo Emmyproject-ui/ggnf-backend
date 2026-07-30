@@ -3,7 +3,14 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json([
+        'service'     => 'GGNF Laravel API',
+        'status'      => 'running',
+        'version'     => '1.0.0',
+        'environment' => config('app.env'),
+        'docs'        => 'API is accessible at /api/*',
+        'health'      => url('/health'),
+    ]);
 });
 
 Route::get('/health', function () {
