@@ -37,7 +37,7 @@ until php -r "
             'mysql:host=${DB_HOST};port=${DB_PORT};dbname=${DB_DATABASE}',
             '${DB_USERNAME}',
             '${DB_PASSWORD}',
-            [PDO::MYSQL_ATTR_SSL_CA => true, PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false]
+            [PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false]
         );
         echo 'connected';
     } catch (Exception \$e) {
@@ -61,8 +61,11 @@ php artisan migrate --force --no-interaction
 
 # ── Cache config/routes/views ────────────────────────────────
 echo "⚙️  Caching configuration..."
+php artisan config:clear
 php artisan config:cache
+php artisan route:clear
 php artisan route:cache
+php artisan view:clear
 php artisan view:cache
 
 # ── Create storage symlink (idempotent) ─────────────────────
