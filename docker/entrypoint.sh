@@ -59,6 +59,10 @@ echo "✅ MySQL is ready."
 echo "⚙️  Running migrations..."
 php artisan migrate --force --no-interaction
 
+# ── Seed admin user (updateOrCreate — safe to re-run) ────────
+echo "⚙️  Seeding admin user..."
+php artisan db:seed --class=AdminUserSeeder --force --no-interaction
+
 # ── Cache config/routes/views ────────────────────────────────
 echo "⚙️  Caching configuration..."
 php artisan config:clear
