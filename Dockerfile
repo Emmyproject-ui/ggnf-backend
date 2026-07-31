@@ -57,6 +57,7 @@ RUN docker-php-ext-configure gd \
 
 # ── PHP production ini ───────────────────────────────────────
 COPY docker/php/php.ini /usr/local/etc/php/conf.d/app.ini
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # ── Supervisor config ────────────────────────────────────────
 COPY docker/supervisord.conf /etc/supervisord.conf
